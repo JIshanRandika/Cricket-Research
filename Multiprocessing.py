@@ -11,6 +11,16 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
+
+def getUpPoint():
+    return mp_pose.PoseLandmark.LEFT_SHOULDER
+
+def getMiddlePoint():
+    return mp_pose.PoseLandmark.LEFT_ELBOW
+
+def getLowPoint():
+    return mp_pose.PoseLandmark.LEFT_WRIST
+
 def calculate_angle(a,b,c):
     a = np.array(a) # First
     b = np.array(b) # Mid
@@ -52,6 +62,9 @@ def find_available_cameras():
 def function1():
     print("Function 1 started")
     time.sleep(2)  # Simulating some work
+    upPointMark = getUpPoint()
+    middlePointMark = getMiddlePoint()
+    lowPointMark = getLowPoint()
     available_cameras = find_available_cameras()
     if len(available_cameras) >= 2:
         cap1 = cv2.VideoCapture(available_cameras[0])
@@ -83,9 +96,9 @@ def function1():
             image1 = cv2.cvtColor(image1, cv2.COLOR_RGB2BGR)
             try:
                 landmarks1 = results1.pose_landmarks.landmark
-                upPoint = [landmarks1[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x, landmarks1[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
-                middlePoint = [landmarks1[mp_pose.PoseLandmark.LEFT_ELBOW.value].x, landmarks1[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
-                lowPoint = [landmarks1[mp_pose.PoseLandmark.LEFT_WRIST.value].x, landmarks1[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+                upPoint = [landmarks1[upPointMark.value].x, landmarks1[upPointMark.value].y]
+                middlePoint = [landmarks1[middlePointMark.value].x, landmarks1[middlePointMark.value].y]
+                lowPoint = [landmarks1[lowPointMark.value].x, landmarks1[lowPointMark.value].y]
 
                 calculated_angle = calculate_angle(upPoint, middlePoint, lowPoint)
 
