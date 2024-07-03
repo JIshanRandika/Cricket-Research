@@ -139,7 +139,7 @@ def cameraOne():
                                             mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2))
 
                 out1.write(image1)
-                angle_values1.append({'Time': time.time(), 'Camera 1 Angle': calculated_angle})
+                angle_values1.append({'Time': time.time() - start_time, 'Camera 1 Angle': calculated_angle})
             except Exception as e:
                 print("Error:", e)
             cv2.imshow('Camera 1', image1)
@@ -161,7 +161,7 @@ def cameraOne():
         print("Error saving Video files:", e)
 
     print("Camera one completed")
-    return "Camera one Done"
+    return df1
 
 def cameraTwo():
     print("Camera Two started")
@@ -228,7 +228,7 @@ def cameraTwo():
                                             mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2))
 
                 out1.write(image1)
-                angle_values1.append({'Time': time.time(), 'Camera 2 Angle': calculated_angle})
+                angle_values1.append({'Time': time.time() - start_time, 'Camera 2 Angle': calculated_angle})
             except Exception as e:
                 print("Error:", e)
             cv2.imshow('Camera 1', image1)
@@ -250,7 +250,7 @@ def cameraTwo():
         print("Error saving Video files:", e)
 
     print("Camera two completed")
-    return "Camera two Done"
+    return df1
 
 def function3():
     print("Function 3 started")
@@ -271,8 +271,23 @@ if __name__ == '__main__':
 
     end_time = time.time()
 
+    # Initialize an empty list to store dataframes
+    dataframes = []
+    
     # Print results
     for i, result in enumerate(results, 1):
-        print(f"Result from Function {i}: {result}")
-
+        # print(f"Result from Function {i}: {result}")
+        if isinstance(result, pd.DataFrame):
+            # If it is, append it to the dataframes list
+            dataframes.append(result)
+            print(f"DataFrame from Function {i} added to the array.")
+        else:
+            print(f"Result from Function {i} is not a DataFrame, skipped.")
+     # Concatenate dataframes horizontally
+    combined_df = pd.concat(dataframes, axis=1)
+    try:
+        combined_df.to_excel(os.path.join(os.path.dirname(__file__),'camera1_2_angles.xlsx'), index=False)
+        print("Excel files saved successfully.")
+    except Exception as e:
+        print("Error saving Excel files:", e)
     print(f"All functions completed in {end_time - start_time:.2f} seconds")
