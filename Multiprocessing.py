@@ -91,9 +91,11 @@ def cameraOne():
     stage1 = None
     angle_values1 = []
     size1 = (640, 480)
+    fps = 30  # Set your desired frame rate
     frame_rate1 = cap1.get(cv2.CAP_PROP_FPS)
+    cap1.set(cv2.CAP_PROP_FPS, fps)
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out1 = cv2.VideoWriter(os.path.join(os.path.dirname(__file__),'camera1_output.mp4'), fourcc, 5, size1)
+    out1 = cv2.VideoWriter(os.path.join(os.path.dirname(__file__),'camera1_output.mp4'), fourcc, fps, size1)
 
     start_time = time.time()
 
@@ -102,11 +104,11 @@ def cameraOne():
             elapsed_time = time.time() - start_time
             current_time = time.time() - start_time
             ret1, frame1 = cap1.read()
-            if frame1 is not None:
-                frame1_ = rescale_frame1(frame1, percent=75)
+            # if frame1 is not None:
+            #     frame1_ = rescale_frame1(frame1, percent=75)
             if not ret1:
                 break
-            image1 = cv2.cvtColor(frame1_, cv2.COLOR_BGR2RGB)
+            image1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2RGB)
             image1.flags.writeable = False
             results1 = pose.process(image1)
             image1.flags.writeable = True
@@ -137,7 +139,7 @@ def cameraOne():
                                             mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2))
 
                 out1.write(image1)
-                angle_values1.append({'Time': current_time, 'Camera 1 Angle': calculated_angle})
+                angle_values1.append({'Time': time.time(), 'Camera 1 Angle': calculated_angle})
             except Exception as e:
                 print("Error:", e)
             cv2.imshow('Camera 1', image1)
@@ -178,9 +180,11 @@ def cameraTwo():
     stage1 = None
     angle_values1 = []
     size1 = (640, 480)
+    fps = 30  # Set your desired frame rate
     frame_rate1 = cap1.get(cv2.CAP_PROP_FPS)
+    cap1.set(cv2.CAP_PROP_FPS, fps)
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out1 = cv2.VideoWriter(os.path.join(os.path.dirname(__file__),'camera2_output.mp4'), fourcc, 5, size1)
+    out1 = cv2.VideoWriter(os.path.join(os.path.dirname(__file__),'camera2_output.mp4'), fourcc, fps, size1)
 
     start_time = time.time()
 
@@ -191,9 +195,9 @@ def cameraTwo():
             ret1, frame1 = cap1.read()
             if not ret1:
                 break
-            if frame1 is not None:
-                frame1_ = rescale_frame2(frame1, percent=75)
-            image1 = cv2.cvtColor(frame1_, cv2.COLOR_BGR2RGB)
+            # if frame1 is not None:
+            #     frame1_ = rescale_frame2(frame1, percent=75)
+            image1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2RGB)
             image1.flags.writeable = False
             results1 = pose.process(image1)
             image1.flags.writeable = True
@@ -224,7 +228,7 @@ def cameraTwo():
                                             mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2))
 
                 out1.write(image1)
-                angle_values1.append({'Time': current_time, 'Camera 1 Angle': calculated_angle})
+                angle_values1.append({'Time': time.time(), 'Camera 2 Angle': calculated_angle})
             except Exception as e:
                 print("Error:", e)
             cv2.imshow('Camera 1', image1)
