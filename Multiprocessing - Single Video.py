@@ -62,13 +62,13 @@ def find_available_cameras():
 
 def cameraOne():
     print("Camera One started")
-    time.sleep(2)  # Simulating some work
+    # time.sleep(2)  # Simulating some work
     upPointMark = getUpPoint()
     middlePointMark = getMiddlePoint()
     lowPointMark = getLowPoint()
     available_cameras = find_available_cameras()
     if len(available_cameras) >= 1:
-        cap1 = cv2.VideoCapture("7608-3_70626.avi")
+        cap1 = cv2.VideoCapture("1.mp4")
         # desired_fps = 34  # For example, set to 10 FPS
         # cap1.set(cv2.CAP_PROP_FPS, desired_fps)
 
@@ -99,7 +99,7 @@ def cameraOne():
         os.makedirs(output_dir)
     frame_number = 0  # Initialize the frame counter
 
-    with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+    with mp_pose.Pose(min_detection_confidence=0.75, min_tracking_confidence=0.75) as pose:
         while cap1.isOpened():
             elapsed_time = time.time() - start_time
             current_time = time.time() - start_time
@@ -162,7 +162,7 @@ def cameraOne():
     cv2.destroyAllWindows()
     df1 = pd.DataFrame(angle_values1)
     try:
-        df1.to_excel(os.path.join(os.path.dirname(__file__),'LeftKnee_7608-3_70626.xlsx'), index=False)
+        df1.to_excel(os.path.join(os.path.dirname(__file__),'LeftKnee_V1_0.75.xlsx'), index=False)
         print("Excel files saved successfully.")
     except Exception as e:
         print("Error saving Excel files:", e)
