@@ -49,7 +49,7 @@ def find_available_cameras():
     return available_cameras
 
 def process_camera(camera_num, stop_event):
-    print(f"Camera {camera_num} started")
+    print(f"Camera {camera_num} starting")
     upPointMark = getUpPoint()
     middlePointMark = getMiddlePoint()
     lowPointMark = getLowPoint()
@@ -64,7 +64,7 @@ def process_camera(camera_num, stop_event):
             cap = cv2.VideoCapture(2)  # Third video file
         else:
             cap = cv2.VideoCapture(3)  # Fourth video file
-        print(f"Capturing Camera {camera_num}")
+        print(f"Capturing soon camera {camera_num}")
     else:
         print(f"Camera {camera_num} not found.")
         return None
