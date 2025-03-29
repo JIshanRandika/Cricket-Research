@@ -71,19 +71,19 @@ def process_camera(camera_num, stop_event, save_event, reset_event):
     fps = 30
     cap.set(cv2.CAP_PROP_FPS, fps)
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    # output_filename = f'output_camera_{camera_num}.mp4'
-    # out = cv2.VideoWriter(os.path.join(os.path.dirname(__file__), output_filename), fourcc, fps, size)
+    output_filename = f'output_camera_{camera_num}.mp4'
+    out = cv2.VideoWriter(os.path.join(os.path.dirname(__file__), output_filename), fourcc, fps, size)
 
     start_time = time.time()
-    # output_dir = f"frames_camera_{camera_num}"
-    # if not os.path.exists(output_dir):
-    #     os.makedirs(output_dir)
+    output_dir = f"frames_camera_{camera_num}"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     frame_number = 0
 
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
         while cap.isOpened() and not stop_event.is_set():
             # Check for save and reset events
-            if save_event.is_set():
+            if save_event.is_set(): 
                 # Save current data
                 if angle_values:
                     df = pd.DataFrame(angle_values)
@@ -95,10 +95,8 @@ def process_camera(camera_num, stop_event, save_event, reset_event):
                         print(f"Error saving Excel file for Camera {camera_num}:", e)
                 
                 # Save video and frames
-                output_filename = f'output_camera_{camera_num}_{int(start_time)}.mp4'
-                out = cv2.VideoWriter(os.path.join(os.path.dirname(__file__), output_filename), fourcc, fps, size)
                 out.release()
-                # out = cv2.VideoWriter(os.path.join(os.path.dirname(__file__), output_filename), fourcc, fps, size)
+                out = cv2.VideoWriter(os.path.join(os.path.dirname(__file__), output_filename), fourcc, fps, size)
                 
                 # Reset tracking variables
                 counter = 0
@@ -107,13 +105,10 @@ def process_camera(camera_num, stop_event, save_event, reset_event):
                 start_time = time.time()
                 frame_number = 0
                 
-                output_dir = f"frames_camera_{camera_num}_{int(start_time)}"
-                if not os.path.exists(output_dir):
-                    os.makedirs(output_dir)
                 # Clear existing frames directory
-                # if os.path.exists(output_dir):
-                #     shutil.rmtree(output_dir)
-                # os.makedirs(output_dir)
+                if os.path.exists(output_dir):
+                    shutil.rmtree(output_dir)
+                os.makedirs(output_dir)
                 
                 # Reset the save event
                 save_event.clear()
